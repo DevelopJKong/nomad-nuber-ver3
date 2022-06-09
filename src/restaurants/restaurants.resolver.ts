@@ -20,16 +20,22 @@ export class RestaurantResolver {
     try {
       await this.restaurantService.createRestaurant(createRestaurantDto);
       return true;
-      
     } catch (error) {
       console.log(error);
       return false;
     }
   }
 
-  @Mutation(returns => Boolean)
-  async updateRestaurant(@Args() updateRestaurantDto: UpdateRestaurantDto) {
-    return true;
+  @Mutation((returns) => Boolean)
+  async updateRestaurant(
+    @Args('input') updateRestaurantDto: UpdateRestaurantDto,
+  ): Promise<boolean> {
+    try {
+      await this.restaurantService.updateRestaurant(updateRestaurantDto);
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
   }
-
 }
