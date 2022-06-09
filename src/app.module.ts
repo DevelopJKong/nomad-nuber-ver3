@@ -1,3 +1,4 @@
+import { User } from './users/entities/user.entity';
 import { Restaurant } from './restaurants/entities/restaurant.entity';
 import { Module } from '@nestjs/common';
 import * as Joi from 'joi';
@@ -7,6 +8,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { RestaurantsModule } from './restaurants/restaurants.module';
+import { UsersModule } from './users/users.module';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
@@ -32,12 +35,13 @@ import { RestaurantsModule } from './restaurants/restaurants.module';
       database: process.env.DB_NAME,
       synchronize: process.env.NODE_ENV !== 'prod',
       logging: true,
-      entities: [Restaurant]
+      entities: [User]
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: true,
     }),
-    RestaurantsModule,
+    UsersModule,
+    CommonModule,
   ],
   controllers: [AppController],
   providers: [AppService],
