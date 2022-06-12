@@ -5,7 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
 
 @Module({
-    imports:[TypeOrmModule.forFeature([User])],
-    providers:[UsersResolver,UserService]
+  imports: [TypeOrmModule.forFeature([User])],
+  providers: [UsersResolver, UserService],
+  exports: [UserService],
 })
 export class UsersModule {}

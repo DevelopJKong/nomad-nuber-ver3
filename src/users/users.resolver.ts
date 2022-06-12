@@ -1,3 +1,5 @@
+import { AuthUser } from './../auth/auth-user.decorator';
+import { AuthGuard } from './../auth/auth.guard';
 import { LoginOutput, LoginInput } from './dtos/login.dto';
 import {
   CreateAccountOutput,
@@ -6,6 +8,7 @@ import {
 import { UserService } from './users.service';
 import { User } from './entities/user.entity';
 import { Mutation, Query, Resolver, Args } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
 
 @Resolver((of) => User)
 export class UsersResolver {
@@ -47,5 +50,11 @@ export class UsersResolver {
       const { ok, error, token } = await this.userService.login(loginInput);
       return { ok, error, token };
     } catch (error) {}
+  }
+
+  @Query(returns => User)
+  @UseGuards(AuthGuard)
+  me(@AuthUser() authUser:User) {
+    return authUser;
   }
 }
