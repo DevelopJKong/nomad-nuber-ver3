@@ -1,3 +1,4 @@
+import { Verification } from './users/dtos/verification.entity';
 import { JwtMiddleware } from './jwt/jwt.middleware';
 import { User } from './users/entities/user.entity';
 import {
@@ -42,7 +43,7 @@ import { AuthModule } from './auth/auth.module';
       database: process.env.DB_NAME,
       synchronize: process.env.NODE_ENV !== 'prod',
       logging: true,
-      entities: [User],
+      entities: [User,Verification],
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: true,

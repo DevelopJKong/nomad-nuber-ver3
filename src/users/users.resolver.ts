@@ -1,3 +1,4 @@
+import { VerifyEmailOutput, VerifyEmailInput } from './dtos/verify-email.dto';
 import { EditProfileOutput, EditProfileInput } from './dtos/edit-profile.dto';
 import { AuthUser } from './../auth/auth-user.decorator';
 import { AuthGuard } from './../auth/auth.guard';
@@ -67,7 +68,7 @@ export class UsersResolver {
   ): Promise<UserProfileOutput> {
     try {
       const user = await this.userService.findById(userProfileInput.userId);
-      if(!user) {
+      if (!user) {
         throw Error();
       }
       return {
@@ -83,20 +84,26 @@ export class UsersResolver {
   }
 
   @UseGuards(AuthGuard)
-  @Mutation(returns => EditProfileOutput)
-  async editProfile(@AuthUser() authUser:User,@Args('input') editProfileInput:EditProfileInput):Promise<EditProfileOutput> {
+  @Mutation((returns) => EditProfileOutput)
+  async editProfile(
+    @AuthUser() authUser: User,
+    @Args('input') editProfileInput: EditProfileInput,
+  ): Promise<EditProfileOutput> {
     try {
-      await this.userService.editProfile(authUser.id,editProfileInput);
+      await this.userService.editProfile(authUser.id, editProfileInput);
       return {
-        ok:true
-      }
+        ok: true,
+      };
     } catch (error) {
       return {
-        ok:false,
-        error
-      }
+        ok: false,
+        error,
+      };
     }
   }
 
-
+  @Mutation((returns) => VerifyEmailOutput)
+  verifyEmail(@Args('input') { code }: VerifyEmailInput) {
+    this.userService.verifyEmail(code);
+  }
 }

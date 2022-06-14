@@ -1,3 +1,4 @@
+import { Verification } from './dtos/verification.entity';
 import { JwtService } from './../jwt/jwt.service';
 import { ConfigService } from '@nestjs/config';
 import { LoginInput } from './dtos/login.dto';
@@ -12,6 +13,8 @@ import { EditProfileInput } from './dtos/edit-profile.dto';
 export class UserService {
   constructor(
     @InjectRepository(User) private readonly users: Repository<User>,
+    @InjectRepository(Verification)
+    private readonly verifications: Repository<Verification>,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -25,7 +28,15 @@ export class UserService {
       if (exists) {
         return { ok: false, error: 'There is a user with that email' };
       }
-      await this.users.save(this.users.create({ email, password, role }));
+      const user = await this.users.save(
+        this.users.create({ email, password, role }),
+      );
+      await this.verifications.save(
+        this.verifications.create({
+          user,
+        }),
+      );
+
       return {
         ok: true,
       };
@@ -81,10 +92,24 @@ export class UserService {
     const user = await this.users.findOne(userId);
     if (email) {
       user.email = email;
+      user.verified = false;
+      await this.verifications.save(this.verifications.create({ user }));
     }
     if (password) {
       user.password = password;
     }
     return this.users.save(user);
+  }
+
+  async verifyEmail(code: string): Promise<boolean> {
+    const verification = await this.verifications.findOne(
+      { code },
+      { relations: ['user'] },
+    );
+    if (verification) {
+      verification.user.verified = true;
+      this.users.save(verification.user);
+    }
+    return false;
   }
 }
