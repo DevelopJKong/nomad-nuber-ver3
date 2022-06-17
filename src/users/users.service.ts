@@ -42,7 +42,12 @@ export class UserService {
       );
 
       this.mailService.sendVerificationEmail(user.email, verification.code);
-
+      console.log(
+        this.mailService.sendVerificationEmail(user.email, verification.code),
+      );
+      console.log(user.email);
+      console.log(verification.code);
+      console.log(this.mailService);
       return {
         ok: true,
       };
@@ -116,7 +121,9 @@ export class UserService {
       if (email) {
         user.email = email;
         user.verified = false;
-        const verification = await this.verifications.save(this.verifications.create({ user }));
+        const verification = await this.verifications.save(
+          this.verifications.create({ user }),
+        );
         this.mailService.sendVerificationEmail(user.email, verification.code);
       }
       if (password) {

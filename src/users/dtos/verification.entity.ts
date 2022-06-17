@@ -9,9 +9,9 @@ import { BeforeInsert, Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 @Entity()
 export class Verification extends CoreEntity {
   @Column()
-  @Field(type => String)
+  @Field((type) => String)
   code: string;
-  @OneToOne(type => User,{ onDelete:"CASCADE"})
+  @OneToOne((type) => User, { onDelete: 'CASCADE' })
   @JoinColumn()
   user: User;
 
