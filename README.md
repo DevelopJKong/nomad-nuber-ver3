@@ -15,3 +15,8 @@
     <li>user => authentication[인증] 구현</li>
   </ul>
 </div>
+
+
+<div>
+  <p>🎁⭐메일 쪽에서 꼭 환경변수가 바꼈는지 확인해주기!</p>
+</div>
