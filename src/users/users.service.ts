@@ -43,12 +43,7 @@ export class UserService {
       );
 
       this.mailService.sendVerificationEmail(user.email, verification.code);
-      console.log(
-        this.mailService.sendVerificationEmail(user.email, verification.code),
-      );
-      console.log(user.email);
-      console.log(verification.code);
-      console.log(this.mailService);
+   
       return {
         ok: true,
       };
