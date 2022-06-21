@@ -31,6 +31,7 @@ describe('UserService', () => {
   let usersRepository: MockRepository<User>;
   let verificationsRepository: MockRepository<Verification>;
   let mailService: MailService;
+  let jwtService:JwtService;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -58,6 +59,7 @@ describe('UserService', () => {
     mailService = module.get<MailService>(MailService);
     usersRepository = module.get(getRepositoryToken(User));
     verificationsRepository = module.get(getRepositoryToken(Verification));
+    jwtService = module.get<JwtService>(JwtService);
   });
 
   it('be defined', () => {
@@ -147,6 +149,27 @@ describe('UserService', () => {
         error: 'User not found',
       });
     });
+
+    it('should fail if the password is wrong', async () => {
+      const mockedUser = {
+        checkPassword: jest.fn(() => Promise.resolve(false)),
+      };
+      usersRepository.findOne.mockResolvedValue(mockedUser);
+      const result = await service.login(loginArgs);
+      expect(result).toEqual({ ok: false, error: 'Wrong password' });
+    });
+
+    it('should return token if password correct', async () => {
+      const mockedUser = {
+        id: 1,
+        checkPassword: jest.fn(() => Promise.resolve(true)),
+      };
+      usersRepository.findOne.mockResolvedValue(mockedUser);
+      const result = await service.login(loginArgs);
+      expect(jwtService.sign).toHaveBeenCalledTimes(1);
+      expect(jwtService.sign).toHaveBeenCalledWith(expect.any(Object));
+      expect(result).toEqual({ ok: true });
+    });
   });
   describe('findById', () => {
     const findByIdArgs = {
@@ -232,14 +255,14 @@ describe('UserService', () => {
   });
   describe('verifyEmail', () => {
     it('should verify email', async () => {
-      const mockVerification = {
+      const mockedVerification = {
         user: {
           verified: false,
         },
         id: 1,
       };
+      verificationsRepository.findOne.mockResolvedValue(mockedVerification);
 
-      verificationsRepository.findOne.mockResolvedValue(mockVerification);
       const result = await service.verifyEmail('');
 
       expect(verificationsRepository.findOne).toHaveBeenCalledTimes(1);
@@ -247,15 +270,13 @@ describe('UserService', () => {
         expect.any(Object),
         expect.any(Object),
       );
-
       expect(usersRepository.save).toHaveBeenCalledTimes(1);
       expect(usersRepository.save).toHaveBeenCalledWith({ verified: true });
 
       expect(verificationsRepository.delete).toHaveBeenCalledTimes(1);
       expect(verificationsRepository.delete).toHaveBeenCalledWith(
-        mockVerification.id,
+        mockedVerification.id,
       );
-
       expect(result).toEqual({ ok: true });
     });
 
@@ -264,6 +285,7 @@ describe('UserService', () => {
       const result = await service.verifyEmail('');
       expect(result).toEqual({ ok: false, error: 'Verification not found' });
     });
+
     it('should fail on exception', async () => {
       verificationsRepository.findOne.mockRejectedValue(new Error());
       const result = await service.verifyEmail('');
