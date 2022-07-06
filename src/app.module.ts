@@ -1,4 +1,4 @@
-import { Verification } from './users/dtos/verification.entity';
+import { Verification } from './users/entities/verification.entity';
 import { JwtMiddleware } from './jwt/jwt.middleware';
 import { User } from './users/entities/user.entity';
 import {

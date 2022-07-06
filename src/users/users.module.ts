@@ -1,4 +1,4 @@
-import { Verification } from './dtos/verification.entity';
+import { Verification } from './entities/verification.entity';
 import { UserService } from './users.service';
 import { UsersResolver } from './users.resolver';
 import { User } from './entities/user.entity';

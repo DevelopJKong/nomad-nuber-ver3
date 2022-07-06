@@ -1,7 +1,7 @@
 import { MailService } from './../mail/mail.service';
 import { UserProfileOutput } from './dtos/user-profile.dto';
 import { VerifyEmailOutput } from './dtos/verify-email.dto';
-import { Verification } from './dtos/verification.entity';
+import { Verification } from './entities/verification.entity';
 import { JwtService } from './../jwt/jwt.service';
 import { ConfigService } from '@nestjs/config';
 import { LoginInput } from './dtos/login.dto';
@@ -113,6 +113,9 @@ export class UserService {
   ): Promise<EditProfileOutput> {
     try {
       const user = await this.users.findOne(userId);
+      
+
+
       if (email) {
         user.email = email;
         user.verified = false;

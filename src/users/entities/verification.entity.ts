@@ -1,4 +1,4 @@
-import { User } from './../entities/user.entity';
+import { User } from './user.entity';
 import { v4 as uuidv4 } from 'uuid';
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { CoreEntity } from 'src/common/entities/core.entity';
