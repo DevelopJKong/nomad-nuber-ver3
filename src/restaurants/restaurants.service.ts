@@ -1,3 +1,4 @@
+import { Category } from './entities/category.entity';
 import { User } from './../users/entities/user.entity';
 import {
   CreateRestaurantInput,
@@ -13,14 +14,33 @@ export class RestaurantService {
   constructor(
     @InjectRepository(Restaurant)
     private readonly restaurants: Repository<Restaurant>,
+    @InjectRepository(Category)
+    private readonly categories: Repository<Category>,
   ) {}
 
   async createRestaurant(
-    owner:User,
+    owner: User,
     createRestaurantInput: CreateRestaurantInput,
   ): Promise<CreateRestaurantOutput> {
     try {
       const newRestaurant = this.restaurants.create(createRestaurantInput);
+      newRestaurant.owner = owner;
+      const categoryName = createRestaurantInput.categoryName
+        .trim()
+        .toLowerCase();
+      const categorySlug = categoryName.replace(/ /g, '-');
+
+      let category = await this.categories.findOne({ slug: categorySlug });
+      if (!category) {
+        category = await this.categories.save(
+          this.categories.create({
+            slug: categorySlug,
+            name: categoryName,
+          }),
+        );
+      }
+      newRestaurant.category = category;
+
       await this.restaurants.save(newRestaurant);
       return {
         ok: true,
@@ -28,7 +48,7 @@ export class RestaurantService {
     } catch (error) {
       return {
         ok: false,
-        error:"Could not create restaurant"
+        error: 'Could not create restaurant',
       };
     }
   }
