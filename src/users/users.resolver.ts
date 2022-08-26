@@ -1,3 +1,4 @@
+import { Role } from './../auth/role.decorator';
 import { VerifyEmailOutput, VerifyEmailInput } from './dtos/verify-email.dto';
 import { EditProfileOutput, EditProfileInput } from './dtos/edit-profile.dto';
 import { AuthUser } from './../auth/auth-user.decorator';
@@ -35,21 +36,21 @@ export class UsersResolver {
   }
 
   @Query((returns) => User)
-  @UseGuards(AuthGuard)
+  @Role(['Any'])
   me(@AuthUser() authUser: User) {
     return authUser;
   }
 
-  @UseGuards(AuthGuard)
   @Query((returns) => UserProfileOutput)
+  @Role(['Any'])
   async userProfile(
     @Args() userProfileInput: UserProfileInput,
   ): Promise<UserProfileOutput> {
     return this.userService.findById(userProfileInput.userId);
   }
 
-  @UseGuards(AuthGuard)
   @Mutation((returns) => EditProfileOutput)
+  @Role(['Any'])
   async editProfile(
     @AuthUser() authUser: User,
     @Args('input') editProfileInput: EditProfileInput,

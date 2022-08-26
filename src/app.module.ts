@@ -1,3 +1,4 @@
+import { AuthModule } from './auth/auth.module';
 import { Category } from './restaurants/entities/category.entity';
 import { Restaurant } from './restaurants/entities/restaurant.entity';
 import { Verification } from './users/entities/verification.entity';
@@ -60,6 +61,7 @@ import { RestaurantsModule } from './restaurants/restaurants.module';
       fromEmail: process.env.MAILGUN_FROM_EMAIL,
       domain: process.env.MAILGUN_DOMAIN_NAME,
     }),
+    AuthModule,
     UsersModule,
     RestaurantsModule,
   ],
