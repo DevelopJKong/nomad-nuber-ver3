@@ -1,3 +1,5 @@
+import { EditRestaurantInput, EditRestaurantOutput } from './dtos/edit-restaurant.dto';
+import { EditProfileOutput } from './../users/dtos/edit-profile.dto';
 import { User, UserRole } from './../users/entities/user.entity';
 import { RestaurantService } from './restaurants.service';
 import {
@@ -22,5 +24,14 @@ export class RestaurantResolver {
       authUser,
       createRestaurantInput,
     );
+  }
+
+  @Mutation((returns) => EditRestaurantOutput)
+  @Role(['Owner'])
+  async editRestaurant(
+    @AuthUser() authUser: User,
+    @Args('input') editRestaurantInput: EditRestaurantInput,
+  ): Promise<EditRestaurantOutput> {
+    return this.restaurantService.editRestaurant(authUser, editRestaurantInput);
   }
 }
