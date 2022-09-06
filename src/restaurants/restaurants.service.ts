@@ -131,20 +131,22 @@ export class RestaurantService {
     }
   }
 
-
   async allCategories(): Promise<AllCategoriesOutput> {
     try {
       const categories = await this.categories.find();
       return {
         ok: true,
-        categories
-      }
+        categories,
+      };
     } catch (error) {
       return {
         ok: false,
-        error: 'Could not load categories'
-      }
+        error: 'Could not load categories',
+      };
     }
   }
 
+  countRestaurants(category: Category) {
+    return this.restaurants.count({ category });
+  }
 }

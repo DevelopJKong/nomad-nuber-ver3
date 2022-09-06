@@ -11,7 +11,15 @@ import {
   CreateRestaurantInput,
   CreateRestaurantOutput,
 } from './dtos/create-restaurant.dto';
-import { Args, Int, Mutation, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Int,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { AuthUser } from '../auth/auth-user.decorator';
 import { Role } from '../auth/role.decorator';
 import {
@@ -57,12 +65,10 @@ export class RestaurantResolver {
 export class CategoryResolver {
   constructor(private readonly restaurantService: RestaurantService) {}
 
-  @ResolveField(type => Int)
-  restaurantCount():number {
-    return 0;
+  @ResolveField((type) => Int)
+  restaurantCount(@Parent() category: Category): Promise<number> {
+    return this.restaurantService.countRestaurants(category);
   }
-
-
 
   @Query((type) => AllCategoriesOutput)
   allCategories(): Promise<AllCategoriesOutput> {
