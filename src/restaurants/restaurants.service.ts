@@ -15,6 +15,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { EditProfileOutput } from 'src/users/dtos/edit-profile.dto';
 import { CategoryRepository } from './repositories/category.respository';
+import { AllCategoriesOutput } from './dtos/all-categories.dto';
 
 @Injectable()
 export class RestaurantService {
@@ -129,4 +130,21 @@ export class RestaurantService {
       };
     }
   }
+
+
+  async allCategories(): Promise<AllCategoriesOutput> {
+    try {
+      const categories = await this.categories.find();
+      return {
+        ok: true,
+        categories
+      }
+    } catch (error) {
+      return {
+        ok: false,
+        error: 'Could not load categories'
+      }
+    }
+  }
+
 }
