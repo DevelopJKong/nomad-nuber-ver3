@@ -1,30 +1,39 @@
-import { User } from './../../users/entities/user.entity';
+import { Dish } from './dish.entity';
+import { User } from 'src/users/entities/user.entity';
 import { Category } from './category.entity';
-import { CoreEntity } from 'src/common/entities/core.entity';
-import { InputType } from '@nestjs/graphql';
-import { Field, ObjectType } from '@nestjs/graphql';
-import { IsString, Length } from 'class-validator';
-import { Column, Entity, ManyToOne, OneToMany, RelationId } from 'typeorm';
+import { CoreEntity } from './../../common/entities/core.entity';
+import { Field, ObjectType, InputType } from '@nestjs/graphql';
+import { IsString, Length, IsBoolean, IsOptional } from 'class-validator';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  RelationId,
+} from 'typeorm';
 
-@InputType('restaurantInputType', { isAbstract: true })
+@InputType('RestaurantInputType', { isAbstract: true })
 @ObjectType()
 @Entity()
 export class Restaurant extends CoreEntity {
   @Field((type) => String)
-  @Column({ unique: true })
+  @Column()
   @IsString()
   @Length(5)
   name: string;
 
-  @Field((type) => String, { nullable: true })
-  @Column({ nullable: true })
+  @Field((type) => String)
+  @Column()
   @IsString()
   coverImg: string;
 
-  @Field((type) => String, { defaultValue: '부산' })
+  @Field((type) => String)
   @Column()
-  @IsString()
   address: string;
+
+
+
 
   @Field((type) => Category, { nullable: true })
   @ManyToOne((type) => Category, (category) => category.restaurants, {
@@ -41,4 +50,8 @@ export class Restaurant extends CoreEntity {
 
   @RelationId((restaurant: Restaurant) => restaurant.owner)
   ownerId: number;
+
+  @Field((type) => [Dish])
+  @OneToMany((type) => Dish, (dish) => dish.restaurant)
+  menu: Dish[];
 }

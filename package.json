@@ -88,10 +88,10 @@
     },
     "collectCoverageFrom": [
       "**/*.service.(t|j)s"
-      ],
+    ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
-    "coveragePathIgnorePatterns" : [
+    "coveragePathIgnorePatterns": [
       "node_modules",
       ".entity.ts",
       ".constants.ts"

@@ -1,8 +1,8 @@
+import { CoreEntity } from './../../common/entities/core.entity';
+import { Field, ObjectType, InputType } from '@nestjs/graphql';
+import { IsString, Length, IsBoolean, IsOptional } from 'class-validator';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Restaurant } from './restaurant.entity';
-import { InputType, ObjectType, Field } from '@nestjs/graphql';
-import { IsString, Length } from 'class-validator';
-import { CoreEntity } from 'src/common/entities/core.entity';
-import { Column, Entity, OneToMany } from 'typeorm';
 
 @InputType('CategoryInputType', { isAbstract: true })
 @ObjectType()
@@ -17,16 +17,14 @@ export class Category extends CoreEntity {
   @Field((type) => String, { nullable: true })
   @Column({ nullable: true })
   @IsString()
-  coverImg: string;
-
-  @Field((type) => [Restaurant], { nullable: true })
-  @OneToMany((type) => Restaurant, (restaurant) => restaurant.category, {
-    onDelete: 'CASCADE',
-  })
-  restaurants: Restaurant[];
+  coverImage: string;
 
   @Field((type) => String)
   @Column({ unique: true })
   @IsString()
   slug: string;
+
+  @Field((type) => [Restaurant])
+  @OneToMany((type) => Restaurant, (restaurant) => restaurant.category)
+  restaurants: Restaurant[];
 }
