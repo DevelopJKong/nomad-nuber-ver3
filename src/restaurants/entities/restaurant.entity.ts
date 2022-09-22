@@ -1,3 +1,4 @@
+import { Order } from 'src/orders/entity/order.entity';
 import { Dish } from './dish.entity';
 import { User } from 'src/users/entities/user.entity';
 import { Category } from './category.entity';
@@ -32,9 +33,6 @@ export class Restaurant extends CoreEntity {
   @Column()
   address: string;
 
-
-
-
   @Field((type) => Category, { nullable: true })
   @ManyToOne((type) => Category, (category) => category.restaurants, {
     nullable: true,
@@ -54,4 +52,8 @@ export class Restaurant extends CoreEntity {
   @Field((type) => [Dish])
   @OneToMany((type) => Dish, (dish) => dish.restaurant)
   menu: Dish[];
+
+  @Field((type) => [Order])
+  @OneToMany((type) => Order, (order) => order.restaurant)
+  orders: Order[];
 }

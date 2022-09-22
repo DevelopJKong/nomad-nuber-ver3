@@ -1,3 +1,4 @@
+import { Order } from 'src/orders/entity/order.entity';
 import { Dish } from './restaurants/entities/dish.entity';
 import { RestaurantsModule } from './restaurants/restaurants.module';
 import { Category } from './restaurants/entities/category.entity';
@@ -19,6 +20,7 @@ import { JwtMiddleware } from './jwt/jwt.middleware';
 import { AuthModule } from './auth/auth.module';
 import { MailModule } from './mail/mail.module';
 import { Restaurant } from './restaurants/entities/restaurant.entity';
+import { OrdersModule } from './orders/orders.module';
 
 @Module({
   imports: [
@@ -52,7 +54,7 @@ import { Restaurant } from './restaurants/entities/restaurant.entity';
       database: process.env.DB_NAME,
       synchronize: process.env.NODE_ENV !== 'prod',
       logging: process.env.NODE_ENV !== 'prod' && process.env.NODE_ENV !== 'test', //true
-      entities: [User, Verification,Restaurant,Category,Dish],
+      entities: [User, Verification,Restaurant,Category,Dish,Order],
     }),
     JwtModule.forRoot({
       privateKey: process.env.PRIVATE_KEY,
@@ -66,6 +68,7 @@ import { Restaurant } from './restaurants/entities/restaurant.entity';
     AuthModule,
     UsersModule,
     RestaurantsModule,
+    OrdersModule,
   ],
   controllers: [],
   providers: [],
