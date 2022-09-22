@@ -1,3 +1,4 @@
+import { OrderItem } from './orders/entity/order-item.entity';
 import { Order } from 'src/orders/entity/order.entity';
 import { Dish } from './restaurants/entities/dish.entity';
 import { RestaurantsModule } from './restaurants/restaurants.module';
@@ -53,13 +54,22 @@ import { OrdersModule } from './orders/orders.module';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       synchronize: process.env.NODE_ENV !== 'prod',
-      logging: process.env.NODE_ENV !== 'prod' && process.env.NODE_ENV !== 'test', //true
-      entities: [User, Verification,Restaurant,Category,Dish,Order],
+      logging:
+        process.env.NODE_ENV !== 'prod' && process.env.NODE_ENV !== 'test', //true
+      entities: [
+        User,
+        Verification,
+        Restaurant,
+        Category,
+        Dish,
+        Order,
+        OrderItem,
+      ],
     }),
     JwtModule.forRoot({
       privateKey: process.env.PRIVATE_KEY,
     }),
-    
+
     MailModule.forRoot({
       apiKey: process.env.MAILGUN_API_KEY,
       domain: process.env.MAILGUN_DOMAIN_NAME,

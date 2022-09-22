@@ -1,4 +1,4 @@
-import { OrderService } from './order.service';
+import { OrderService } from './orders.service';
 import { Order } from './entity/order.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
