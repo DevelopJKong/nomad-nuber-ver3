@@ -15,8 +15,6 @@ export class DishChoice {
   extra?:number;
 }
 
-
-
 @InputType('DishOptionInputType', { isAbstract: true })
 @ObjectType()
 export class DishOption {
