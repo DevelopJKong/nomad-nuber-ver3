@@ -18,6 +18,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateOrderInput, CreateOrderOutput } from './dtos/create-order.dto';
 import { User } from 'src/users/entities/user.entity';
 import { Restaurant } from 'src/restaurants/entities/restaurant.entity';
+import { TakeOrderInput, TakeOrderOutput } from './dtos/take-order.dto';
 
 @Injectable()
 export class OrderService {
@@ -243,7 +244,7 @@ export class OrderService {
       if (user.role === UserRole.Delivery) {
         if (
           status !== OrderStatus.PickedUp &&
-          status === OrderStatus.Delivered
+          status !== OrderStatus.Delivered
         ) {
           canEdit = false;
         }
@@ -279,6 +280,47 @@ export class OrderService {
     } catch (error) {
       return {
         ok: false,
+      };
+    }
+  }
+
+  async takeOrder(
+    driver: User,
+    { id: orderId }: TakeOrderInput,
+  ): Promise<TakeOrderOutput> {
+    try {
+      const order = await this.orders.findOne(orderId);
+      if (!order) {
+        return {
+          ok: false,
+          error: 'Order not found',
+        };
+      }
+
+      if (order.driver) {
+        return {
+          ok: false,
+          error: 'This order already has a driver',
+        };
+      }
+
+      await this.orders.save({
+        id: orderId,
+        driver,
+      });
+
+      await this.pubSub.publish(NEW_ORDER_UPDATE, {
+        ...order,
+        driver,
+      });
+
+      return {
+        ok: true,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        error: 'Could not update order',
       };
     }
   }
