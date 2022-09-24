@@ -54,17 +54,22 @@ export class OrderResolver {
     return this.orderService.editOrder(user, editOrderInput);
   }
 
-    @Mutation((returns) => Boolean)
-    potatoReady() {
-      this.pubSub.publish('hotPotatos', {
-        readyPotato: 'Yiur potato is ready. love you.',
-      });
-      return true;
-    }
-  
-    @Subscription((returns) => String)
-    @Role(['Any'])
-    readyPotato(@AuthUser() user: User) {
-      return this.pubSub.asyncIterator('hotPotatos');
-    }
+  @Mutation((returns) => Boolean)
+  potatoReady(@Args('potatoId') potatoId: number) {
+    this.pubSub.publish('hotPotatos', {
+      readyPotato: potatoId,
+    });
+    return true;
+  }
+
+  @Subscription((returns) => String, {
+    filter: ({ readyPotato }, { potatoId }) => {
+      return readyPotato === potatoId;
+    },
+    resolve: ({readyPotato}) => `Your potato with the id ${readyPotato} is ready`
+  })
+  @Role(['Any'])
+  readyPotato(@Args('potatoId') potatoId: number) {
+    return this.pubSub.asyncIterator('hotPotatos');
+  }
 }
