@@ -1,4 +1,4 @@
-import { PUB_SUB, NEW_PNEDING_ORDER } from './../common/common.constants';
+import { PUB_SUB, NEW_PNEDING_ORDER, NEW_COOKED_ORDER } from './../common/common.constants';
 import { EditOrderInput, EditOrderOutput } from './dtos/edit-order.dto';
 import { GetOrdersInput, GetOrdersOutput } from './dtos/get-orders.dto';
 import { User } from 'src/users/entities/user.entity';
@@ -56,7 +56,6 @@ export class OrderResolver {
 
   @Subscription((returns) => Order, {
     filter: ({ pendingOrders: { ownerId } }, _, { user }) => {
-      console.log(ownerId, user);
       return ownerId === user.id;
     },
     resolve: ({ pendingOrders: { order } }) => order,
@@ -66,6 +65,11 @@ export class OrderResolver {
     return this.pubSub.asyncIterator(NEW_PNEDING_ORDER);
   }
 
+  @Subscription((returns) => Order)
+  @Role(['Delivery'])
+  cookedOrders() {
+    return this.pubSub.asyncIterator(NEW_COOKED_ORDER);
+  }
   /* 
   @Mutation((returns) => Boolean)
   potatoReady(@Args('potatoId') potatoId: number) {

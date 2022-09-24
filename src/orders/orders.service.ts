@@ -1,5 +1,9 @@
 import { PubSub } from 'graphql-subscriptions';
-import { PUB_SUB, NEW_PNEDING_ORDER } from './../common/common.constants';
+import {
+  PUB_SUB,
+  NEW_PNEDING_ORDER,
+  NEW_COOKED_ORDER,
+} from './../common/common.constants';
 import { EditOrderInput, EditOrderOutput } from './dtos/edit-order.dto';
 import { GetOrderInput, GetOrderOutput } from './dtos/get-order.dto';
 import { UserRole } from './../users/entities/user.entity';
@@ -257,6 +261,13 @@ export class OrderService {
         id: orderId,
         status,
       });
+      if (user.role === UserRole.Owner) {
+        if (status === OrderStatus.Cooked) {
+          await this.pubSub.publish(NEW_COOKED_ORDER, {
+            cookedOrders: { ...order, status },
+          });
+        }
+      }
 
       return {
         ok: true,
