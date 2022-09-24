@@ -31,7 +31,6 @@ export class OrderService {
     customer: User,
     { restaurantId, items }: CreateOrderInput,
   ): Promise<CreateOrderOutput> {
-    console.log(customer);
     try {
       const restaurant = await this.restaurants.findOne(restaurantId);
       if (!restaurant) {
@@ -94,7 +93,9 @@ export class OrderService {
         }),
       );
 
-      await this.pubSub.publish(NEW_PNEDING_ORDER, { pendingOrders: order });
+      await this.pubSub.publish(NEW_PNEDING_ORDER, {
+        pendingOrders: { order, ownerId: restaurant.ownerId },
+      });
 
       return {
         ok: true,
