@@ -9,6 +9,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetPaymentsOutput } from './dtos/get-payment.dto';
+import { Cron, Interval, SchedulerRegistry, Timeout } from '@nestjs/schedule';
 
 @Injectable()
 export class PaymentService {
@@ -17,6 +18,7 @@ export class PaymentService {
     private readonly payments: Repository<Payment>,
     @InjectRepository(Restaurant)
     private readonly restaurants: Repository<Restaurant>,
+    private schedulerRegistry: SchedulerRegistry,
   ) {}
   async createPayment(
     owner: User,
@@ -63,13 +65,30 @@ export class PaymentService {
 
       return {
         ok: true,
-        payments 
+        payments,
       };
     } catch (error) {
       return {
         ok: false,
-        error:"Could not load payments",
+        error: 'Could not load payments',
       };
     }
+  }
+
+  @Cron('1 * * * * *')
+  async checkForPayments() {
+    console.log('Checking for payments....');
+    const job = this.schedulerRegistry.getCronJob('myJob');
+    job.stop();
+  }
+
+  @Interval(5000)
+  checkForPaymentsI() {
+    console.log('Checking for payments....(interval)');
+  }
+
+  @Timeout(2000)
+  afterStarts() {
+    console.log('Congrats');
   }
 }
