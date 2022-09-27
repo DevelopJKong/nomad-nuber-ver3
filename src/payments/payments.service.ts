@@ -7,7 +7,7 @@ import { User } from 'src/users/entities/user.entity';
 import { Payment } from 'src/payments/entities/payment.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { LessThan, Repository } from 'typeorm';
 import { GetPaymentsOutput } from './dtos/get-payment.dto';
 import { Cron, Interval, SchedulerRegistry, Timeout } from '@nestjs/schedule';
 
@@ -79,6 +79,19 @@ export class PaymentService {
         error: 'Could not load payments',
       };
     }
+  }
+
+  @Interval(2000)
+  async checkPromotedRestaurants() {
+    const restaurants = await this.restaurants.find({
+      isPromoted: true,
+      promotedUntil: LessThan(new Date()),
+    });
+    restaurants.forEach(async (restaurant) => {
+      restaurant.isPromoted = false;
+      restaurant.promotedUntil = null;
+      await this.restaurants.save(restaurant);
+    });
   }
 
   //   @Cron('1 * * * * *')

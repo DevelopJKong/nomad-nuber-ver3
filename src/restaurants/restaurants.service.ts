@@ -182,7 +182,7 @@ export class RestaurantService {
           category,
         },
         order: {
-          isPromoted: 'DESC'
+          isPromoted: 'DESC',
         },
         take: 25,
         skip: (page - 1) * 25,
