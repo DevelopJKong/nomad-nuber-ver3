@@ -27,5 +27,4 @@ export class PaymentResolver {
   getPayments(@AuthUser() user: User): Promise<GetPaymentsOutput> {
     return this.paymentService.getPayments(user);
   }
-
 }
