@@ -61,7 +61,6 @@ export class RestaurantService {
       const category = await this.getOrCreate(
         createRestaurantInput.categoryName,
       );
-      console.log(newRestaurant);
       newRestaurant.category = category;
       await this.restaurants.save(newRestaurant);
       return {
