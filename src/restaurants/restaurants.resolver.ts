@@ -1,3 +1,4 @@
+import { MyRestaurantsOutput } from './dtos/my-restaurant.dto';
 import { CreateDishInput, CreateDishOutput } from './dtos/create-dish.dto';
 import { RestaurantOutput, RestaurantInput } from './dtos/restaurant.dto';
 import { AllCategoriesOutput } from './dtos/all-categories.dto';
