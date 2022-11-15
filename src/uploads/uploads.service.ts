@@ -23,11 +23,13 @@ export class UploadsService {
         .putObject({
           Body: file.buffer,
           Bucket: BUCKET_NAME,
-          Key: `${Date.now() + file.originalname}`,
+          Key: objectName,
           ACL: 'public-read',
         })
         .promise();
-      const url = `https//${BUCKET_NAME}.s3/amazonaws.com/${objectName}`;
+        
+      const url = `https://${BUCKET_NAME}.s3.ap-northeast-2.amazonaws.com/${objectName}`;
+      
       return { url };
     } catch (error) {
       return null;
