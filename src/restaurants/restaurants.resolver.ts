@@ -105,8 +105,8 @@ export class RestaurantResolver {
   myRestaurant(
     @AuthUser() owner: User,
     @Args('input') myRestaurantInput: MyRestaurantInput,
-  ):Promise<MyRestaurantOutput> {
-    return this.restaurantService.myRestaurant(owner,myRestaurantInput);
+  ): Promise<MyRestaurantOutput> {
+    return this.restaurantService.myRestaurant(owner, myRestaurantInput);
   }
 
   @Query((returns) => SearchRestaurantOutput)
