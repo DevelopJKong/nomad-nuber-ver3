@@ -200,6 +200,7 @@ export class OrderService {
 
       return {
         ok: true,
+        order,
       };
     } catch (error) {
       return {
