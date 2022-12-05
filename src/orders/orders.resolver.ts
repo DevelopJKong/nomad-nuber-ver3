@@ -1,6 +1,6 @@
 import {
   PUB_SUB,
-  NEW_PNEDING_ORDER,
+  NEW_PENDING_ORDER,
   NEW_COOKED_ORDER,
   NEW_ORDER_UPDATE,
 } from './../common/common.constants';
@@ -69,7 +69,7 @@ export class OrderResolver {
   })
   @Role(['Owner'])
   pendingOrders() {
-    return this.pubSub.asyncIterator(NEW_PNEDING_ORDER);
+    return this.pubSub.asyncIterator(NEW_PENDING_ORDER);
   }
 
   @Subscription((returns) => Order)
