@@ -1,7 +1,7 @@
 import { PubSub } from 'graphql-subscriptions';
 import {
   PUB_SUB,
-  NEW_PNEDING_ORDER,
+  NEW_PENDING_ORDER,
   NEW_COOKED_ORDER,
   NEW_ORDER_UPDATE,
 } from './../common/common.constants';
@@ -99,12 +99,13 @@ export class OrderService {
         }),
       );
 
-      await this.pubSub.publish(NEW_PNEDING_ORDER, {
+      await this.pubSub.publish(NEW_PENDING_ORDER, {
         pendingOrders: { order, ownerId: restaurant.ownerId },
       });
 
       return {
         ok: true,
+        orderId: order.id,
       };
     } catch (error) {
       return {
