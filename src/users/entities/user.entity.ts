@@ -26,39 +26,39 @@ registerEnumType(UserRole, { name: 'UserRole' });
 @Entity()
 export class User extends CoreEntity {
   @Column()
-  @Field((type) => String)
+  @Field((_type) => String)
   @IsEmail()
   email: string;
 
   @Column({ select: false })
-  @Field((type) => String)
+  @Field((_type) => String)
   @IsString()
   password: string;
 
   @Column({ type: 'enum', enum: UserRole })
-  @Field((type) => UserRole)
+  @Field((_type) => UserRole)
   @IsEnum(UserRole)
   role: UserRole;
 
   @Column({ default: false })
-  @Field((type) => Boolean)
+  @Field((_type) => Boolean)
   @IsBoolean()
   verified: boolean;
 
-  @Field((type) => [Restaurant])
-  @OneToMany((type) => Restaurant, (restaurant) => restaurant.owner)
+  @Field((_type) => [Restaurant])
+  @OneToMany((_type) => Restaurant, (restaurant) => restaurant.owner)
   restaurants: Restaurant[];
 
-  @Field((type) => [Order])
-  @OneToMany((type) => Order, (order) => order.customer)
+  @Field((_type) => [Order])
+  @OneToMany((_type) => Order, (order) => order.customer)
   orders: Order[];
 
-  @Field((type) => [Payment])
-  @OneToMany((type) => Payment, (payment) => payment.user)
+  @Field((_type) => [Payment])
+  @OneToMany((_type) => Payment, (payment) => payment.user)
   payments: Payment[];
 
-  @Field((type) => [Order])
-  @OneToMany((type) => Order, (order) => order.driver)
+  @Field((_type) => [Order])
+  @OneToMany((_type) => Order, (order) => order.driver)
   rides: Order[];
 
   @BeforeInsert()
