@@ -41,7 +41,7 @@ import { UploadsModule } from './uploads/uploads.module';
         MAILGUN_FROM_EMAIL: Joi.string().required(),
         AWS_ID: Joi.string().required(),
         AWS_SECRET_KEY: Joi.string().required(),
-        AWS_BUCKET_NAME: Joi.string().required()
+        AWS_BUCKET_NAME: Joi.string().required(),
       }),
     }),
     GraphQLModule.forRoot({
