@@ -9,7 +9,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LessThan, Repository } from 'typeorm';
 import { GetPaymentsOutput } from './dtos/get-payment.dto';
-import { Cron, Interval, SchedulerRegistry, Timeout } from '@nestjs/schedule';
+import { Interval } from '@nestjs/schedule';
 
 @Injectable()
 export class PaymentService {
@@ -18,7 +18,6 @@ export class PaymentService {
     private readonly payments: Repository<Payment>,
     @InjectRepository(Restaurant)
     private readonly restaurants: Repository<Restaurant>,
-    private schedulerRegistry: SchedulerRegistry,
   ) {}
   async createPayment(
     owner: User,

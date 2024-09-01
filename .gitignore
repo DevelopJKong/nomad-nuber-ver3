@@ -39,3 +39,8 @@ lerna-debug.log*
 .env.test
 
 erd.drawio
+
+.env
+.env.development
+
+yarn.lock
