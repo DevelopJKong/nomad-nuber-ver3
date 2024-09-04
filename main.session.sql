@@ -1,1 +1,4 @@
-SELECT * FROM public.user;
+SELECT
+    *
+FROM
+    public.user;
