@@ -1,26 +1,26 @@
-import { OrderItem } from './orders/entity/order-item.entity';
-import { Order } from 'src/orders/entity/order.entity';
-import { Dish } from './restaurants/entities/dish.entity';
-import { RestaurantsModule } from './restaurants/restaurants.module';
-import { Category } from './restaurants/entities/category.entity';
-import { Verification } from './users/entities/verification.entity';
-import { User } from './users/entities/user.entity';
+import { OrderItem } from './domains/orders/entity/order-item.entity';
+import { Dish } from './domains/restaurants/entities/dish.entity';
+import { RestaurantsModule } from './domains/restaurants/restaurants.module';
+import { Verification } from './domains/users/entities/verification.entity';
+import { Category } from './domains/restaurants/entities/category.entity';
+import { User } from './domains/users/entities/user.entity';
 import { Module } from '@nestjs/common';
 import * as Joi from 'joi'; // 타입 스크립트로 되어 있지 않은 패키지는 이렇게 import를 해와야 한다
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersModule } from './users/users.module';
-import { JwtModule } from './jwt/jwt.module';
-import { AuthModule } from './auth/auth.module';
-import { MailModule } from './mail/mail.module';
-import { Restaurant } from './restaurants/entities/restaurant.entity';
-import { OrdersModule } from './orders/orders.module';
+import { UsersModule } from './domains/users/users.module';
+import { JwtModule } from './libs/jwt/jwt.module';
+import { AuthModule } from './domains/auth/auth.module';
+import { MailModule } from './libs/mail/mail.module';
+import { Restaurant } from './domains/restaurants/entities/restaurant.entity';
+import { OrdersModule } from './domains/orders/orders.module';
 import { CommonModule } from './common/common.module';
-import { PaymentsModule } from './payments/payments.module';
-import { Payment } from './payments/entities/payment.entity';
+import { PaymentsModule } from './domains/payments/payments.module';
+import { Payment } from './domains/payments/entities/payment.entity';
 import { ScheduleModule } from '@nestjs/schedule';
-import { UploadsModule } from './uploads/uploads.module';
+import { UploadsModule } from './domains/uploads/uploads.module';
+import { Order } from './domains/orders/entity/order.entity';
 
 @Module({
   imports: [
